@@ -134,7 +134,7 @@ namespace IdentityServer.Data
             return operation;
         }
 
-        public async Task<OperationResult<bool>> Logout(string logoutId)
+        public async Task<OperationResult<bool>> SignOut(string logoutId)
         {
 
             OperationResult<bool> operation = new OperationResult<bool>();

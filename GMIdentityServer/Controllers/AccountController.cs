@@ -52,11 +52,11 @@ namespace GMIdentityServer.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Logout(string logoutId)
+        public async Task<IActionResult> SignOut(string logoutId)
         {
-            var result = await AccountRepository.Logout(logoutId);
+            var result = await AccountRepository.SignOut(logoutId);
 
-            string url = Url.Action("Logout", new { logoutId = logoutId  });
+            string url = Url.Action("SignOut", new { logoutId = logoutId  });
 
             return RedirectToAction(nameof(Login)) ;
         }

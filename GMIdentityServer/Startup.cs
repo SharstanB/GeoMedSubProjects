@@ -56,7 +56,7 @@ namespace GMIdentityServer
                 {
                     option.UserInteraction.LoginUrl = "/Account/Login";
                     option.UserInteraction.ErrorUrl = "/Home/Index";
-                    option.UserInteraction.LogoutUrl = "/Account/Logout";
+                    option.UserInteraction.LogoutUrl = "/Account/SignOut";
                 }
                 )
                   .AddAspNetIdentity<IdenServUser>()
