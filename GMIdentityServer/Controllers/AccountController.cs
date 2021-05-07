@@ -41,7 +41,6 @@ namespace GMIdentityServer.Controllers
         [HttpPost]
         public async Task<IActionResult> Login( LoginViewModel loginView)
         {
-            var jsd = loginView.ReturnUrl;
             if (ModelState.IsValid)
             {
                await AccountRepository.SignIn(Mapper.Map<SignInDto>(loginView));
@@ -55,10 +54,11 @@ namespace GMIdentityServer.Controllers
         public async Task<IActionResult> SignOut(string logoutId)
         {
             var result = await AccountRepository.SignOut(logoutId);
+            return Challenge(new AuthenticationProperties
+            {
+                 RedirectUri = "https://localhost:44363"
+            });
 
-            string url = Url.Action("SignOut", new { logoutId = logoutId  });
-
-            return RedirectToAction(nameof(Login)) ;
         }
 
 

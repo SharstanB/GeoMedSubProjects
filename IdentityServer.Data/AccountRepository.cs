@@ -90,7 +90,8 @@ namespace IdentityServer.Data
                         {
                             UserName = signUpDto.UserName,
                             Email = signUpDto.UserName,
-                            NormalizedUserName = signUpDto.FirstName + " " + signUpDto.LastName
+                            FirstName = signUpDto.FirstName ,
+                            LastName = signUpDto.LastName,
                         };
 
                         var result = await UserManager.CreateAsync(SetUser, signUpDto.Password);
