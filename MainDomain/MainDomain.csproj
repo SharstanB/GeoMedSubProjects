@@ -5,8 +5,11 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="GM.QueueService" Version="1.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\GM.Base\GM.Base.csproj" />
-    <ProjectReference Include="..\IdentityServer.Dto\IdentityServer.Dto.csproj" />
   </ItemGroup>
 
 </Project>
