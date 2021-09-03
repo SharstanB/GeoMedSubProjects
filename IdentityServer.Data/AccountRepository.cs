@@ -90,7 +90,8 @@ namespace IdentityServer.Data
                         {
                             UserName = signUpDto.UserName,
                             Email = signUpDto.UserName,
-                            NormalizedUserName = signUpDto.FirstName + " " + signUpDto.LastName
+                            FirstName = signUpDto.FirstName ,
+                            LastName = signUpDto.LastName,
                         };
 
                         var result = await UserManager.CreateAsync(SetUser, signUpDto.Password);
@@ -134,7 +135,7 @@ namespace IdentityServer.Data
             return operation;
         }
 
-        public async Task<OperationResult<bool>> Logout(string logoutId)
+        public async Task<OperationResult<bool>> SignOut(string logoutId)
         {
 
             OperationResult<bool> operation = new OperationResult<bool>();

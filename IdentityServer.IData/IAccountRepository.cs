@@ -11,6 +11,6 @@ namespace IdentityServer.IData
 
         Task<OperationResult<SignUpDto>> SignUp(SignUpDto signUpDto);
 
-        Task<OperationResult<bool>> Logout(string logoutId);
+        Task<OperationResult<bool>> SignOut(string logoutId);
     }
 }
