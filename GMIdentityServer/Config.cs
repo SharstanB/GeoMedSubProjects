@@ -140,6 +140,32 @@ namespace GMIdentityServer
                         IdentityServerConstants.StandardScopes.OpenId ,
                     }
                 },
+
+                 new Client
+                {
+                    ClientId = "not_secret_dash_client_id",
+
+                    AllowedGrantTypes = GrantTypes.Code,
+
+                    RequirePkce = true,
+
+                    ClientSecrets =
+                    {
+                        new Secret("SecretGeoMedDashBoardProject2021".Sha256())
+                    },
+
+                    ClientUri = "http://localhost:1131",
+
+                    RedirectUris = { "http://localhost:1131/signin-oidc" },
+
+                    PostLogoutRedirectUris = { "http://localhost:1131/signout-callback-oidc" },
+
+                    AllowedScopes = {
+                        "dashscope",
+                        IdentityServerConstants.StandardScopes.OpenId ,
+                    }
+                },
+
                  new Client
                 {
                     ClientId = "secret_api_client_id",

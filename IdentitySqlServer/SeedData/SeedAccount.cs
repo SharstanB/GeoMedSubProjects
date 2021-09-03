@@ -14,7 +14,7 @@ namespace IdentitySqlServer.SeedData
         {
             var userManager = (UserManager<IdenServUser>)serviceProvider.GetService(typeof(UserManager<IdenServUser>));
             var context = (IdenServeContext)serviceProvider.GetService(typeof(IdenServeContext));
-
+            await context.Database.EnsureCreatedAsync();
             var admin = await userManager.FindByNameAsync("GeoMed");
 
             if(admin == null)
