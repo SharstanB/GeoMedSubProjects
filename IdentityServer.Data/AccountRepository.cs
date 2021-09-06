@@ -1,11 +1,9 @@
-﻿using GeoMed.SqlServer;
+﻿using GeoMed.Model.Account;
+using GeoMed.SqlServer;
 using GM.Base;
-using IdentityServer.Base;
 using IdentityServer.Dto;
 using IdentityServer.IData;
 using IdentityServer4.Services;
-using IdentityServerModels;
-using IdentitySqlServer.SqlServer;
 using Microsoft.AspNetCore.Identity;
 using System;
 using System.Linq;
@@ -13,17 +11,17 @@ using System.Threading.Tasks;
 
 namespace IdentityServer.Data
 {
-    public class AccountRepository : IdenServBaseRepository, IAccountRepository
+    public class AccountRepository : BaseRepository, IAccountRepository
     {
-        public SignInManager<IdenServUser> SignInManager { get; }
+        public SignInManager<GMUser> SignInManager { get; }
 
-        public UserManager<IdenServUser> UserManager { get; }
+        public UserManager<GMUser> UserManager { get; }
 
         private readonly IIdentityServerInteractionService _interactionService;
 
-        public AccountRepository(IdenServeContext gMApiContext,
-            SignInManager<IdenServUser> _SignInManager,
-             UserManager<IdenServUser> _UserManager)
+        public AccountRepository(GMApiContext gMApiContext,
+            SignInManager<GMUser> _SignInManager,
+             UserManager<GMUser> _UserManager)
             : base(gMApiContext)
         {
             SignInManager = _SignInManager;
@@ -38,7 +36,7 @@ namespace IdentityServer.Data
             try
             {
 
-                var userEntity = Context.Users.Where(user => !user.DeletedDate.HasValue)
+                var userEntity = Context.Users.Where(user => !user.DeleteDate.HasValue)
                  .SingleOrDefault(user => signInDto.UserName == user.UserName ||
                                             signInDto.UserName == user.Email);
 
@@ -86,7 +84,7 @@ namespace IdentityServer.Data
                     try
                     {
 
-                        IdenServUser SetUser = new IdenServUser()
+                        GMUser SetUser = new GMUser()
                         {
                             UserName = signUpDto.UserName,
                             Email = signUpDto.UserName,

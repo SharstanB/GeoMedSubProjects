@@ -12,8 +12,13 @@ namespace GeoMed.Model.Account
         public GMUser()
         {
         }
+        [Column(TypeName = "nvarchar(50)")]
+        public string FirstName { get; set; }
+
+        [Column(TypeName = "nvarchar(50)")]
+        public string LastName { get; set; }
         [Column(TypeName = "datetime2")]
-        public DateTime DeleteDate { get; set; }
+        public DateTime? DeleteDate { get; set; }
 
         [Column(TypeName = "int")]
         public int Gender { get; set; }  // enum (Gender)

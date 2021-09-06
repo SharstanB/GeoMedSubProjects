@@ -18,7 +18,7 @@ namespace MainDomain.Repositories
 
             Context.Users.Add(new GeoMed.Model.Account.GMUser()
             {
-                BirthDate =
+                //BirthDate =
             });
             return result;
         }
