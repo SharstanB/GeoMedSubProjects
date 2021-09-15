@@ -31,25 +31,6 @@ namespace GMIdentityServer
 
             services.AddMvc();
 
-            //services.AddDbContext<GMApiContext>(options =>
-            //options.UseSqlServer(Configuration.GetConnectionString("GMConnectionString"))
-            //);
-
-
-            //services.AddIdentity<GMUser, GMRole>(identity => {
-            //    identity.Password.RequiredLength = 6;
-            //    identity.Password.RequireNonAlphanumeric = false;
-            //    identity.Password.RequireLowercase = false;
-            //    identity.Password.RequireUppercase = false;
-            //    identity.Password.RequireDigit = false;
-            //    identity.Password.RequiredUniqueChars = 0;
-            //    identity.Lockout.AllowedForNewUsers = false;
-            //    identity.User.AllowedUserNameCharacters =
-            //   "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._@+";
-            //    identity.User.RequireUniqueEmail = false;
-            //})
-            //    .AddEntityFrameworkStores<GMApiContext>()
-            //    .AddDefaultTokenProviders();
 
             services.AddDbContext<GMApiContext>(options =>
 
@@ -72,17 +53,6 @@ namespace GMIdentityServer
                 identity.User.RequireUniqueEmail = false;
             }).AddEntityFrameworkStores<GMApiContext>()
                 .AddDefaultTokenProviders();
-            //services.AddAuthentication(options =>
-            //{
-            //    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-            //    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-            //}).AddJwtBearer(o =>
-            //{
-            //    o.Authority = "https://localhost:44351/";
-            //    o.Audience = "apiResourse";
-            //    o.RequireHttpsMetadata = false;
-            //});
-
 
 
 

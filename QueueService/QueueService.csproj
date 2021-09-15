@@ -12,4 +12,8 @@
     <PackageReference Include="GM.QueueService" Version="1.0.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\MainDomain\MainDomain.csproj" />
+  </ItemGroup>
+
 </Project>

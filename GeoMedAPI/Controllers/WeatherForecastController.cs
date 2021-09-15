@@ -1,11 +1,11 @@
-﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Authorization;
+﻿using GeoMed.Main.DTO.Patients;
+using GM.QueueService.QueueDTO;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace GeoMedAPI.Controllers
 {
@@ -20,15 +20,31 @@ namespace GeoMedAPI.Controllers
 
         private readonly ILogger _logger;
 
+      // private readonly IQueueService<QueueMessage> QueueService;
+
         public WeatherForecastController(ILoggerFactory logger)
         {
             _logger = logger.CreateLogger($"MyWeatherLogger{DateTime.Now.Date}");
+           // QueueService = queueService;
         }
 
-        [Authorize]
+        //[Authorize]
         [HttpGet]
-        public IEnumerable<WeatherForecast> Get()
+        public  IEnumerable<WeatherForecast> Get()
         {
+
+             //QueueService.Consume(new QueueMessage {
+             //  Data = JsonConvert.SerializeObject( new GetPatientDto()
+             //  {
+             //      Address = "aAAAA",
+             //      Age  = 21 ,
+             //      Gender = "dfd",
+             //      Id = 2 ,
+             //      LastInComeDate = DateTime.Now,
+             //      PatientName = "sdfksdslf",
+             //  }),
+             //  Type = typeof(GetPatientDto)
+             //});
             var rng = new Random();
             _logger.LogInformation("Authorized successfully");
 

@@ -29,8 +29,8 @@ namespace GMIdentityServer
             }
         }
         public static IHostBuilder CreateHostBuilder(string[] args) =>
-            Host.CreateDefaultBuilder(args)
-                .ConfigureWebHostDefaults(webBuilder =>
+            Host.CreateDefaultBuilder(args).ConfigureLogging(logging => { })
+            .ConfigureWebHostDefaults(webBuilder =>
                 {
                     webBuilder.UseStartup<Startup>();
                 });
