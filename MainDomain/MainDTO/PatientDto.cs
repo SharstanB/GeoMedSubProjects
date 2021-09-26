@@ -16,6 +16,6 @@ namespace MainDomain.MainDTO
 
         public int AreaId { get; set; }
 
-        public 
+        //public 
     }
 }

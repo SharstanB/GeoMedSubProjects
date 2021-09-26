@@ -1,6 +1,7 @@
 ﻿using GeoMed.SqlServer;
 using GM.Base;
 using MainDomain.IRepositories;
+using MainDomain.MainDTO;
 using System;
 using System.Threading.Tasks;
 
@@ -12,14 +13,21 @@ namespace MainDomain.Repositories
         {
 
         }
-        public async Task<OperationResult<bool>> ActionPatiants()
+        public async Task<OperationResult<bool>> ActionPatiants(PatientDto patientDto)
         {
             var result = new OperationResult<bool>();
 
             Context.Users.Add(new GeoMed.Model.Account.GMUser()
             {
-                BirthDate =
+                BirthDate = patientDto.BirthDay,
+                LastName = patientDto.LastName,
+                FirstName = patientDto.FirsthName,
+                Email = "sd@gmail.com",
+                Gender = 1,
+                PhoneNumber = "3204348349",
             });
+
+            Context.SaveChanges();
             return result;
         }
     }

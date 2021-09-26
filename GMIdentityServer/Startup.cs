@@ -5,12 +5,13 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using IdentitySqlServer.SqlServer;
 using IdentityServer.IData;
 using IdentityServer.Data;
 using AutoMapper;
 using GMIdentityServer.Util;
-using IdentityServerModels;
+using GeoMed.SqlServer;
+using GeoMed.Model.Account;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 
 namespace GMIdentityServer
 {
@@ -30,12 +31,16 @@ namespace GMIdentityServer
 
             services.AddMvc();
 
-            services.AddDbContext<IdenServeContext>(options =>
-            options.UseSqlServer(Configuration.GetConnectionString("GMConnectionString"))
-            );
+
+            services.AddDbContext<GMApiContext>(options =>
+
+           options.UseSqlServer(Configuration.GetConnectionString("GMConnectionString"))
+
+         );
 
 
-            services.AddIdentity<IdenServUser, IdenServRole>(identity => {
+            services.AddIdentity<GMUser, GMRole>(identity =>
+            {
                 identity.Password.RequiredLength = 6;
                 identity.Password.RequireNonAlphanumeric = false;
                 identity.Password.RequireLowercase = false;
@@ -46,9 +51,10 @@ namespace GMIdentityServer
                 identity.User.AllowedUserNameCharacters =
                "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._@+";
                 identity.User.RequireUniqueEmail = false;
-            })
-                .AddEntityFrameworkStores<IdenServeContext>()
+            }).AddEntityFrameworkStores<GMApiContext>()
                 .AddDefaultTokenProviders();
+
+
 
 
             services.AddIdentityServer(
@@ -59,7 +65,7 @@ namespace GMIdentityServer
                     option.UserInteraction.LogoutUrl = "/Account/SignOut";
                 }
                 )
-                  .AddAspNetIdentity<IdenServUser>()
+                  .AddAspNetIdentity<GMUser>()
                   .AddInMemoryClients(Config.GetClients())
                  .AddInMemoryApiResources(Config.GetApiResources())
                  .AddInMemoryApiScopes(Config.GetApiScopes())

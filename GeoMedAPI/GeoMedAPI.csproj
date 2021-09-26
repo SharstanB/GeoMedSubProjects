@@ -7,6 +7,7 @@
   <ItemGroup>
     <PackageReference Include="AutoMapper" Version="10.1.1" />
     <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="8.1.0" />
+    <PackageReference Include="EasyNetQ" Version="6.3.1" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="5.0.1" NoWarn="NU1605" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.OpenIdConnect" Version="5.0.1" NoWarn="NU1605" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="5.0.1">
@@ -19,6 +20,7 @@
   <ItemGroup>
     <ProjectReference Include="..\GMAPI.Model\GMAPI.Model.csproj" />
     <ProjectReference Include="..\GMAPI.SqlServer\GMAPI.SqlServer.csproj" />
+    <ProjectReference Include="..\QueueService\QueueService.csproj" />
   </ItemGroup>
 
 </Project>

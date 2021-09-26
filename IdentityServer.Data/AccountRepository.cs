@@ -1,33 +1,40 @@
-﻿using GeoMed.SqlServer;
+﻿using GeoMed.Model.Account;
+using GeoMed.SqlServer;
 using GM.Base;
-using IdentityServer.Base;
 using IdentityServer.Dto;
 using IdentityServer.IData;
 using IdentityServer4.Services;
-using IdentityServerModels;
-using IdentitySqlServer.SqlServer;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Configuration;
+using Microsoft.IdentityModel.Tokens;
 using System;
+using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
+using System.Security.Claims;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace IdentityServer.Data
 {
-    public class AccountRepository : IdenServBaseRepository, IAccountRepository
+    public class AccountRepository : BaseRepository, IAccountRepository
     {
-        public SignInManager<IdenServUser> SignInManager { get; }
+        private SignInManager<GMUser> SignInManager { get; }
 
-        public UserManager<IdenServUser> UserManager { get; }
+        private UserManager<GMUser> UserManager { get; }
+
+        private  IConfiguration Configration { get; }
 
         private readonly IIdentityServerInteractionService _interactionService;
 
-        public AccountRepository(IdenServeContext gMApiContext,
-            SignInManager<IdenServUser> _SignInManager,
-             UserManager<IdenServUser> _UserManager)
+        public AccountRepository(GMApiContext gMApiContext,
+            SignInManager<GMUser> _SignInManager,
+             UserManager<GMUser> _UserManager,
+             IConfiguration configuration)
             : base(gMApiContext)
         {
             SignInManager = _SignInManager;
             UserManager = _UserManager;
+            Configration = configuration;
         }
 
         
@@ -38,9 +45,9 @@ namespace IdentityServer.Data
             try
             {
 
-                var userEntity = Context.Users.Where(user => !user.DeletedDate.HasValue)
-                 .SingleOrDefault(user => signInDto.UserName == user.UserName ||
-                                            signInDto.UserName == user.Email);
+                var userEntity = Context.Users.Where(user => !user.DeleteDate.HasValue)
+                 .SingleOrDefault(user => signInDto.Username == user.UserName ||
+                                            signInDto.Username == user.Email);
 
                 if (userEntity is null)
                 {
@@ -56,7 +63,14 @@ namespace IdentityServer.Data
                     operation.Result = new SignInDto()
                     {
                         Id = userEntity.Id,
-                        UserName = userEntity.UserName,
+                        Token = generateJwtToken(new UserDto()
+                        {
+                            Username = userEntity.UserName,
+                            Email = userEntity.Email,
+                            Id = userEntity.Id
+                        }),
+                        RememberMe = signInDto.RememberMe,
+                        Email = userEntity.Email
                     };
 
                     operation.OperationResultType = OperationResultTypes.Success;
@@ -86,7 +100,7 @@ namespace IdentityServer.Data
                     try
                     {
 
-                        IdenServUser SetUser = new IdenServUser()
+                        GMUser SetUser = new GMUser()
                         {
                             UserName = signUpDto.UserName,
                             Email = signUpDto.UserName,
@@ -99,6 +113,12 @@ namespace IdentityServer.Data
 
                         if (result == IdentityResult.Success)
                         {
+                            signUpDto.Token = generateJwtToken(new UserDto()
+                            {
+                                Id = signUpDto.Id,
+                                Email = signUpDto.Email,
+                                Username = signUpDto.Username
+                            });
                             operation.Result = signUpDto;
                             operation.OperationResultType = OperationResultTypes.Success;
                             operation.OperationResultMessage = "Success CreateAsync execution :" + nameof(SignUp);
@@ -159,6 +179,21 @@ namespace IdentityServer.Data
                 operation.Result = false;
             }
             return operation;
+        }
+
+        private string generateJwtToken(UserDto user)
+        {
+            // generate token that is valid for 7 days
+            var tokenHandler = new JwtSecurityTokenHandler();
+            var key = Encoding.ASCII.GetBytes(Configration.GetSection("BarearSecurity").Value);
+            var tokenDescriptor = new SecurityTokenDescriptor
+            {
+                Subject = new ClaimsIdentity(new[] { new Claim( "id", user.Id.ToString())}),
+                Expires = DateTime.UtcNow.AddDays(7),
+                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
+            };
+            var token = tokenHandler.CreateToken(tokenDescriptor);
+            return tokenHandler.WriteToken(token);
         }
     }
 }
